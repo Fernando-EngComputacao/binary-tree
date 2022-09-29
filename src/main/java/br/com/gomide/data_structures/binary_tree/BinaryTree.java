@@ -4,15 +4,14 @@ public class BinaryTree<T extends Comparable<T>> implements IBinaryTree<T> {
 
 	@Override
 	public Node<T> createTree(T element) {
-		Node<T> n = new Node<T>();
+		Node<T> n = new Node<T>(true);
 		n.setValue(element);
 		return n;
 	}
 
 	@Override
 	public Node<T> createTree(T[] elements) {
-		Node<T> n = new Node<T>();
-		n.setValue(elements[0]);
+		Node<T> n = createTree(elements[0]);
 
 		for (int i = 1; i < elements.length; i++) {
 			insert(n, elements[i]);
@@ -74,7 +73,7 @@ public class BinaryTree<T extends Comparable<T>> implements IBinaryTree<T> {
 
 	@Override
 	public Node<T> getBrother(Node<T> rootNode, T nodeElement) {
-		return null
+		return null;
 	}
 
 	@Override
@@ -129,7 +128,8 @@ public class BinaryTree<T extends Comparable<T>> implements IBinaryTree<T> {
 	@Override
 	public String toString(Node<T> rootNode) {
 		String result = "";
-		result += rootNode.getValue().toString() + " ";// TODO VERIFICAR QUANDO O VALUE É DE UM NO ROOT COM getFather()
+		String root = rootNode.isRoot() ? "root:": "";
+		result += root + rootNode.getValue().toString() + " ";
 
 		Node<T> left = rootNode.getLeft();
 		Node<T> right = rootNode.getRight();

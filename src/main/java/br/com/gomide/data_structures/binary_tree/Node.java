@@ -1,11 +1,18 @@
 package br.com.gomide.data_structures.binary_tree;
 
-public class Node<T extends Comparable> {
+public class Node<T extends Comparable<?>> {
 
 	private T value;
 	private Node<T> left;
 	private Node<T> right;
-
+	private boolean isRoot;
+	
+	public Node() {}
+	
+	public Node(boolean isRoot) {
+		this.isRoot = isRoot;
+	}
+	
 	public T getValue() {
 		return value;
 	}
@@ -28,5 +35,13 @@ public class Node<T extends Comparable> {
 
 	public void setRight(Node<T> right) {
 		this.right = right;
+	}
+	
+	public boolean isRoot() {
+		return isRoot;
+	}
+
+	public void setRoot(boolean isRoot) {
+		this.isRoot = isRoot;
 	}
 }
