@@ -73,6 +73,18 @@ public class BinaryTree<T extends Comparable<T>> implements IBinaryTree<T> {
 
 	@Override
 	public Node<T> getBrother(Node<T> rootNode, T nodeElement) {
+		Node<T> n0 = getByElement(rootNode, nodeElement);
+		Node<T> le = n0.getLeft();
+		Node<T> ri = n0.getRight();
+
+		if (le.getValue() != null && ri.getValue() != null) {
+			if (le.getValue() == nodeElement) {
+				return ri;
+			}
+			if (ri.getValue() == nodeElement) {
+				return le;
+			}
+		}
 		return null;
 	}
 
@@ -128,7 +140,7 @@ public class BinaryTree<T extends Comparable<T>> implements IBinaryTree<T> {
 	@Override
 	public String toString(Node<T> rootNode) {
 		String result = "";
-		String root = rootNode.isRoot() ? "root:": "";
+		String root = rootNode.isRoot() ? "root:" : "";
 		result += root + rootNode.getValue().toString() + " ";
 
 		Node<T> left = rootNode.getLeft();
