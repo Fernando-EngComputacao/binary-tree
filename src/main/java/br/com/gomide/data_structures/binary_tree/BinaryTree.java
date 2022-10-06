@@ -61,17 +61,17 @@ public class BinaryTree<T extends Comparable<T>> implements IBinaryTree<T> {
 				|| (rootNode.getRight() != null) && (rootNode.getRight().getValue() == nodeElement)) {
 			return rootNode;
 		}
-		
+
 		if ((rootNode.getLeft() != null) && (rootNode.getValue().compareTo(nodeElement) > 0)) {
 			Node<T> n = getFather(rootNode.getLeft(), nodeElement);
-			
+
 			if (n != null) {
 				return n;
 			}
 		}
 		if ((rootNode.getRight() != null) && rootNode.getValue().compareTo(nodeElement) < 0) {
 			Node<T> n = getFather(rootNode.getRight(), nodeElement);
-			
+
 			if (n != null) {
 				return n;
 			}
@@ -85,7 +85,7 @@ public class BinaryTree<T extends Comparable<T>> implements IBinaryTree<T> {
 		Node<T> n0 = getFather(rootNode, nodeElement);
 		Node<T> left = n0.getLeft();
 		Node<T> right = n0.getRight();
-		
+
 		if ((left != null) && (right != null)) {
 			if (left.getValue() == nodeElement) {
 				return right;
@@ -142,8 +142,20 @@ public class BinaryTree<T extends Comparable<T>> implements IBinaryTree<T> {
 
 	@Override
 	public Integer calculateNodeLevel(Node<T> rootNode, T nodeElement) {
-		// TODO Auto-generated method stub
-		return null;
+		Integer lvl = -1;
+		if (rootNode == null || nodeElement == null) {
+			return null;
+		}
+		if (rootNode.getValue() == nodeElement) {
+			return 0;
+		}
+		Node<T> a = new Node<T>(nodeElement);
+		while (a != null) {
+			a = getFather(rootNode, a.getValue());
+			lvl++;
+		}
+		return lvl;
+
 	}
 
 	@Override

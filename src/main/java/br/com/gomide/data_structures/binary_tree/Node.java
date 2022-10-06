@@ -6,13 +6,18 @@ public class Node<T extends Comparable<?>> {
 	private Node<T> left;
 	private Node<T> right;
 	private boolean isRoot;
-	
-	public Node() {}
-	
+
+	public Node() {
+	}
+
 	public Node(boolean isRoot) {
 		this.isRoot = isRoot;
 	}
-	
+
+	public Node(T value) {
+		this.value = value;
+	}
+
 	public T getValue() {
 		return value;
 	}
@@ -20,7 +25,7 @@ public class Node<T extends Comparable<?>> {
 	public void setValue(T value) {
 		this.value = value;
 	}
-	
+
 	public Node<T> getLeft() {
 		return left;
 	}
@@ -36,7 +41,7 @@ public class Node<T extends Comparable<?>> {
 	public void setRight(Node<T> right) {
 		this.right = right;
 	}
-	
+
 	public boolean isRoot() {
 		return isRoot;
 	}
