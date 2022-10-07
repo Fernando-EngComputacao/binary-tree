@@ -1,5 +1,8 @@
 package br.com.gomide.data_structures.binary_tree;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class BinaryTree<T extends Comparable<T>> implements IBinaryTree<T> {
 
 	@Override
@@ -48,9 +51,106 @@ public class BinaryTree<T extends Comparable<T>> implements IBinaryTree<T> {
 
 	@Override
 	public boolean remove(Node<T> rootNode, T nodeElement) {
-		// TODO Auto-generated method stub
-		return false;
+		return remover(rootNode, nodeElement);
 	}
+
+//	public Node<T> remover(Node<T> rootNode, T nodeElement) {
+//		Node<T> p, p2, r = null;
+//
+//		if (rootNode.getValue().compareTo(nodeElement) == 0) {
+//
+//			if (rootNode.getLeft() == rootNode.getRight()) {
+//				return null;
+//			} else if (rootNode.getLeft() == null) {
+//				return rootNode.getRight();
+//			} else if (rootNode.getRight() == null) {
+//				return rootNode.getLeft();
+//			} else {
+//				p2 = rootNode.getRight();
+//				p = rootNode.getLeft();
+//
+//				while (p.getRight() != null) {
+//					r = p;
+//					p = p.getRight();
+//				}
+//
+//				rootNode.setValue(p.getValue());
+//				p = null;
+//				r.setLeft(null);
+//				return rootNode;
+//			}
+//		} else if (rootNode.getValue().compareTo(nodeElement) < 0) {
+//			rootNode.setRight(remover(rootNode.getRight(), nodeElement));
+//		} else {
+//			rootNode.setLeft(remover(rootNode.getLeft(), nodeElement));
+//		}
+//		return r;
+//	}
+
+	public boolean remover(Node<T> rootNode, T nodeElement) {
+		if (rootNode == null)  
+	        return false;  
+	          
+	    if (rootNode.getLeft() == null && rootNode.getRight() == null) {  
+	        if (rootNode.getValue().compareTo(nodeElement) == 0) {  
+	            rootNode = null;  
+	            return true;  
+	        }  
+	        else  
+	            return false;  
+	    }  
+	    Queue<Node<T>> q = new LinkedList<Node<T>>();  
+	    q.add(rootNode);  
+	    Node<T> temp = null, keyNode = null;  
+	    
+	    while (!q.isEmpty()) {  
+	        temp = q.peek();  
+	        q.remove();  
+	        if (temp.getValue().compareTo(nodeElement) == 0)
+	        	keyNode = temp;  
+	        if (temp.getLeft() != null)  
+	            q.add(temp.getLeft());  
+	        if (temp.getRight() != null)  
+	            q.add(temp.getRight());  
+	    }  
+	    if (keyNode != null) {  
+	        T x = temp.getValue();  
+	        removeDeepest(rootNode, temp);  
+	        keyNode.setValue(x);  
+	    }  
+	    return true;
+	} 
+	
+	public void removeDeepest(Node<T> rootNode, Node<T> delNode) {
+		Queue<Node<T>> q = new LinkedList<Node<T>>();
+		q.add(rootNode);
+		Node<T> temp = null;
+
+		while (!q.isEmpty()) {
+			temp = q.peek();
+			q.remove();
+
+			if (temp == delNode) {
+				temp = null;
+				return;
+			}
+			if (temp.getRight() != null) {
+				if (temp.getRight() == delNode) {
+					temp.setRight(null);
+					return;
+				} else
+					q.add(temp.getRight());
+			}
+			if (temp.getLeft() != null) {
+				if (temp.getLeft() == delNode) {
+					temp.setLeft(null);
+					return;
+				} else
+					q.add(temp.getLeft());
+			}
+		}
+	}
+
 
 	@Override
 	public Node<T> getFather(Node<T> rootNode, T nodeElement) {
