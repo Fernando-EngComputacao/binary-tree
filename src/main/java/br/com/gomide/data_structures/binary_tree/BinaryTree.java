@@ -22,12 +22,50 @@ public class BinaryTree<T extends Comparable<T>> implements IBinaryTree<T> {
 		return n;
 	}
 
-	@Override
+	@Override //{ 6, 2, 8, 1, 4, 3 }
 	public Integer degree(Node<T> rootNode, T nodeElement) {
-		// TODO Auto-generated method stub
-		return null;
+		System.out.println(rootNode.getValue());
+		Integer tem = 0;
+		if (rootNode.getValue().compareTo(nodeElement) == 0) {
+			if (rootNode.getRight() != null)
+				tem += 1;
+			if (rootNode.getLeft() != null)
+				tem += 1;
+			
+			return tem;
+		}
+		else {
+			if (rootNode.getValue().compareTo(nodeElement) > 0) {
+				if (rootNode.getLeft() != null) {
+					tem = degree(rootNode.getLeft(), nodeElement);
+				}
+				return tem;
+			}
+				
+			
+			else if (rootNode.getValue().compareTo(nodeElement) < 0) {
+				if (rootNode.getRight() != null) {
+					tem = degree(rootNode.getRight(), nodeElement);
+				}
+				return tem;
+			}
+				
+			else {
+				return null;
+			}
+		}
+			
 	}
 
+	public static void main(String[] args) {
+		IBinaryTree<Integer> binaryTreeOps = new BinaryTree<>();
+		Integer[] elements = new Integer[] { 6, 2, 8, 1, 4, 3 };
+
+		Node<Integer> rootNode = binaryTreeOps.createTree(elements);
+		
+		System.out.println(binaryTreeOps.degree(rootNode, 4));
+	}
+	
 	@Override
 	public void insert(Node<T> rootNode, T element) {
 		if (rootNode.getValue().compareTo(element) > 0) {
@@ -281,5 +319,4 @@ public class BinaryTree<T extends Comparable<T>> implements IBinaryTree<T> {
 
 		return result;
 	}
-
 }
