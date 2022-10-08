@@ -26,6 +26,7 @@ public class BinaryTree<T extends Comparable<T>> implements IBinaryTree<T> {
 	public Integer degree(Node<T> rootNode, T nodeElement) {
 		System.out.println(rootNode.getValue());
 		Integer tem = 0;
+		T root = rootNode.getValue();
 		if (rootNode.getValue().compareTo(nodeElement) == 0) {
 			if (rootNode.getRight() != null)
 				tem += 1;
@@ -36,23 +37,21 @@ public class BinaryTree<T extends Comparable<T>> implements IBinaryTree<T> {
 		}
 		else {
 			if (rootNode.getValue().compareTo(nodeElement) > 0) {
-				if (rootNode.getLeft() != null) {
+				if (rootNode.getLeft() != null) 
 					tem = degree(rootNode.getLeft(), nodeElement);
-				}
-				return tem;
+				else
+					tem = null;
 			}
 				
 			
 			else if (rootNode.getValue().compareTo(nodeElement) < 0) {
-				if (rootNode.getRight() != null) {
+				if (rootNode.getRight() != null) 
 					tem = degree(rootNode.getRight(), nodeElement);
-				}
-				return tem;
+				else
+					tem = null;
 			}
-				
-			else {
-				return null;
-			}
+			return tem;	
+			
 		}
 			
 	}

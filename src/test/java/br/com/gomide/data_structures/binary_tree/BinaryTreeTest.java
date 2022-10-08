@@ -107,7 +107,7 @@ class BinaryTreeTest {
 		assertEquals(binaryTreeOps.degree(rootNode, 8), 0);
 		assertEquals(binaryTreeOps.degree(rootNode, 2), 2);
 		assertEquals(binaryTreeOps.degree(rootNode, 4), 1);
-//		assertNull(binaryTreeOps.degree(rootNode, 10));
+		assertNull(binaryTreeOps.degree(rootNode, 10));
 	}
 
 	@Test
