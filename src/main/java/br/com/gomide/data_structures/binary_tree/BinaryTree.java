@@ -117,30 +117,48 @@ public class BinaryTree<T extends Comparable<T>> implements IBinaryTree<T> {
 				father.setRight(current.getRight());
 		} else {
 			Node<T> successor = successorNode(current);
-			if (current == rootNode)
+			System.out.println("Successor: "+toString(successor));
+			if (current == rootNode) {
+				Node<T> aux = new Node<>();
+				System.out.println(toString(successor.getLeft()));
+				if ((successor.getLeft()) != null) {
+					aux.setValue(successor.getLeft().getValue());
+					aux.setLeft(current.getLeft());
+				}
+//				System.out.println("aux: " + toString(aux));
+				successor.setLeft(aux);
 				rootNode = successor;
-			else if (lef_kid)
-				father.setLeft(successor);
-			else
-				father.setRight(successor);
-			successor.setLeft(current.getLeft());
+				father = rootNode;
+				current = father;
+			} else {
+				if (lef_kid)
+					father.setLeft(successor);
+				else
+					father.setRight(successor);
+
+				successor.setLeft(current.getLeft());
+			}
 		}
+		System.out.println("rootNode: "+toString(rootNode));
+		System.out.println("Current: "+toString(current));
+		System.out.println("Father: "+toString(father));
 		return true;
 	}
 
-	public Node<T> successorNode(Node<T> apaga) {
-		Node<T> successorFather = apaga;
-		Node<T> successor = apaga;
-		Node<T> current = apaga.getRight();
+	public Node<T> successorNode(Node<T> clear) {
+		Node<T> successorFather = clear;
+		Node<T> successor = clear;
+		Node<T> current = clear.getRight();
 
 		while (current != null) {
 			successorFather = successor;
-			successor = current;
+			if (successorFather.getRight() != null)
+				successor = current;
 			current = current.getLeft();
 		}
-		if (successor != apaga.getRight()) {
+		if (successor != clear.getRight()) {
 			successorFather.setLeft(successor.getRight());
-			successor.setRight(apaga.getRight());
+			successor.setRight(clear.getRight());
 		}
 		return successor;
 	}
@@ -166,10 +184,11 @@ public class BinaryTree<T extends Comparable<T>> implements IBinaryTree<T> {
 		assertEquals(binaryTreeOps.toString(rootNode), "root:37 (left:20 (left:5 right:30 )right:100 (left:90 ))");
 
 		binaryTreeOps.remove(rootNode, 20);
-		assertEquals(binaryTreeOps.toString(rootNode), "root:37 (left:30 (left:5 )right:100 (left:90 ))");
+		assertEquals(binaryTreeOps.toString(rootNode), 
+				"root:37 (left:30 (left:5 )right:100 (left:90 ))");
 
-//		binaryTreeOps.remove(rootNode, 37);
-//		assertEquals(binaryTreeOps.toString(rootNode), "root:100 (left:90 (left:30 (left:5 )))");
+		binaryTreeOps.remove(rootNode, 37);
+		 assertEquals(binaryTreeOps.toString(rootNode), "root:100 (left:90 (left:30 (left:5 )))");
 	}
 
 	@Override

@@ -69,8 +69,8 @@ class BinaryTreeTest {
 		binaryTreeOps.remove(rootNode, 20);
 		assertEquals(binaryTreeOps.toString(rootNode), "root:37 (left:30 (left:5 )right:100 (left:90 ))");
 
-//		binaryTreeOps.remove(rootNode, 37);
-//		assertEquals(binaryTreeOps.toString(rootNode), "root:100 (left:90 (left:30 (left:5 )))");
+		binaryTreeOps.remove(rootNode, 37);
+		assertEquals(binaryTreeOps.toString(rootNode), "root:100 (left:90 (left:30 (left:5 )))");
 	}
 
 	@Test
