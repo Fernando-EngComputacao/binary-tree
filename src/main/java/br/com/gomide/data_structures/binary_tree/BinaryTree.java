@@ -22,7 +22,7 @@ public class BinaryTree<T extends Comparable<T>> implements IBinaryTree<T> {
 		return n;
 	}
 
-	@Override //{ 6, 2, 8, 1, 4, 3 }
+	@Override
 	public Integer degree(Node<T> rootNode, T nodeElement) {
 		System.out.println(rootNode.getValue());
 		Integer tem = 0;
@@ -54,15 +54,6 @@ public class BinaryTree<T extends Comparable<T>> implements IBinaryTree<T> {
 			
 		}
 			
-	}
-
-	public static void main(String[] args) {
-		IBinaryTree<Integer> binaryTreeOps = new BinaryTree<>();
-		Integer[] elements = new Integer[] { 6, 2, 8, 1, 4, 3 };
-
-		Node<Integer> rootNode = binaryTreeOps.createTree(elements);
-		
-		System.out.println(binaryTreeOps.degree(rootNode, 4));
 	}
 	
 	@Override
