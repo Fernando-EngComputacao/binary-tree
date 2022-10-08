@@ -1,7 +1,5 @@
 package br.com.gomide.data_structures.binary_tree;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 public class BinaryTree<T extends Comparable<T>> implements IBinaryTree<T> {
 
 	@Override
@@ -117,17 +115,16 @@ public class BinaryTree<T extends Comparable<T>> implements IBinaryTree<T> {
 				father.setRight(current.getRight());
 		} else {
 			Node<T> successor = successorNode(current);
-			System.out.println("Successor: "+toString(successor));
 			if (current == rootNode) {
 				Node<T> aux = new Node<>();
-				System.out.println(toString(successor.getLeft()));
 				if ((successor.getLeft()) != null) {
 					aux.setValue(successor.getLeft().getValue());
 					aux.setLeft(current.getLeft());
 				}
-//				System.out.println("aux: " + toString(aux));
 				successor.setLeft(aux);
-				rootNode = successor;
+				rootNode.setValue(successor.getValue());
+				rootNode.setLeft(successor.getLeft());
+				rootNode.setRight(null);
 				father = rootNode;
 				current = father;
 			} else {
@@ -139,9 +136,6 @@ public class BinaryTree<T extends Comparable<T>> implements IBinaryTree<T> {
 				successor.setLeft(current.getLeft());
 			}
 		}
-		System.out.println("rootNode: "+toString(rootNode));
-		System.out.println("Current: "+toString(current));
-		System.out.println("Father: "+toString(father));
 		return true;
 	}
 
@@ -162,35 +156,6 @@ public class BinaryTree<T extends Comparable<T>> implements IBinaryTree<T> {
 		}
 		return successor;
 	}
-
-	public static void main(String[] args) {
-		BinaryTree<Integer> binaryTreeOps = new BinaryTree<>();
-		Integer[] elements = new Integer[] { 37, 20, 10, 30, 80, 100, 5, 180, 90 };
-
-		Node<Integer> rootNode = binaryTreeOps.createTree(elements);
-
-		assertEquals(binaryTreeOps.toString(rootNode),
-				"root:37 (left:20 (left:10 (left:5 )right:30 )right:80 (right:100 (left:90 right:180 )))");
-
-		binaryTreeOps.remove(rootNode, 180);
-		assertEquals(binaryTreeOps.toString(rootNode),
-				"root:37 (left:20 (left:10 (left:5 )right:30 )right:80 (right:100 (left:90 )))");
-
-		binaryTreeOps.remove(rootNode, 80);
-		assertEquals(binaryTreeOps.toString(rootNode),
-				"root:37 (left:20 (left:10 (left:5 )right:30 )right:100 (left:90 ))");
-
-		binaryTreeOps.remove(rootNode, 10);
-		assertEquals(binaryTreeOps.toString(rootNode), "root:37 (left:20 (left:5 right:30 )right:100 (left:90 ))");
-
-		binaryTreeOps.remove(rootNode, 20);
-		assertEquals(binaryTreeOps.toString(rootNode), 
-				"root:37 (left:30 (left:5 )right:100 (left:90 ))");
-
-		binaryTreeOps.remove(rootNode, 37);
-		 assertEquals(binaryTreeOps.toString(rootNode), "root:100 (left:90 (left:30 (left:5 )))");
-	}
-
 	@Override
 	public Node<T> getFather(Node<T> rootNode, T nodeElement) {
 		if (rootNode == null || rootNode.getValue() == nodeElement) {
@@ -288,7 +253,7 @@ public class BinaryTree<T extends Comparable<T>> implements IBinaryTree<T> {
 		if (rootNode.getValue() == nodeElement) {
 			return 0;
 		}
-		Node<T> a = new Node<T>(nodeElement);
+		Node<T> a = new Node<T>();
 		while (a != null) {
 			a = getFather(rootNode, a.getValue());
 			lvl++;
