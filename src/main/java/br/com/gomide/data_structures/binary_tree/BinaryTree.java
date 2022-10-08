@@ -1,11 +1,8 @@
 package br.com.gomide.data_structures.binary_tree;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BinaryTree<T extends Comparable<T>> implements IBinaryTree<T> {
-
-	private Node<T> root;
 
 	@Override
 	public Node<T> createTree(T element) {
@@ -80,72 +77,72 @@ public class BinaryTree<T extends Comparable<T>> implements IBinaryTree<T> {
 		if (rootNode == null)
 			return false;
 
-		if (rootNode.getLeft() == null && rootNode.getRight() == null) {
-			if (rootNode.getValue().compareTo(nodeElement) == 0) {
-				rootNode = null;
-				return true;
-			} else
+		Node<T> current = rootNode;
+		Node<T> father = rootNode;
+		boolean lef_kid = true;
+
+		while (!(current.getValue().compareTo(nodeElement) == 0)) {
+			father = current;
+			if (current.getValue().compareTo(nodeElement) > 0) {
+				current = current.getLeft();
+				lef_kid = true;
+			} else {
+				current = current.getRight();
+				lef_kid = false;
+			}
+			if (current == null)
 				return false;
 		}
-		Queue<Node<T>> q = new LinkedList<Node<T>>();
-		q.add(rootNode);
-		Node<T> temp = null, keyNode = null;
 
-		while (!q.isEmpty()) {
-			temp = q.peek();
-			System.out.println("Remove-peek: " + toString(temp));
-			System.out.println("Remove-peek: " + toString(keyNode));
-			q.remove();
-			if (temp.getValue().compareTo(nodeElement) == 0)
-				keyNode = temp;
-			else {
-				if (temp.getLeft() != null)
-					q.add(temp.getLeft());
-				if (temp.getRight() != null)
-					q.add(temp.getRight());
-			}
-		}
-		System.out.println("Temp: " + toString(temp));
-		System.out.println("rootNode: " + toString(rootNode));
-		System.out.println("KeyNode: " + toString(keyNode));
-		if (keyNode != null) {
-			T x = temp.getValue();
-			removeDeepest(rootNode, temp);
-			keyNode.setValue(x);
+		if (current.getLeft() == null && current.getRight() == null) {
+			if (current == rootNode)
+				rootNode = null;
+			else if (lef_kid)
+				father.setLeft(null);
+			else
+				father.setRight(null);
+		} else if (current.getRight() == null) {
+			if (current == rootNode)
+				rootNode = current.getLeft();
+			else if (lef_kid)
+				father.setLeft(current.getLeft());
+			else
+				father.setRight(current.getRight());
+		} else if (current.getLeft() == null) {
+			if (current == rootNode)
+				rootNode = current.getRight();
+			else if (lef_kid)
+				father.setLeft(current.getRight());
+			else
+				father.setRight(current.getRight());
+		} else {
+			Node<T> successor = successorNode(current);
+			if (current == rootNode)
+				rootNode = successor;
+			else if (lef_kid)
+				father.setLeft(successor);
+			else
+				father.setRight(successor);
+			successor.setLeft(current.getLeft());
 		}
 		return true;
 	}
 
-	public void removeDeepest(Node<T> rootNode, Node<T> delNode) {
-		Queue<Node<T>> q = new LinkedList<Node<T>>();
-		q.add(rootNode);
-		Node<T> temp = null;
+	public Node<T> successorNode(Node<T> apaga) {
+		Node<T> successorFather = apaga;
+		Node<T> successor = apaga;
+		Node<T> current = apaga.getRight();
 
-		while (!q.isEmpty()) {
-			temp = q.peek();
-			temp = q.peek();
-			q.remove();
-			System.out.println("Temp: " + toString(temp));
-			System.out.println("rootNode: " + toString(rootNode));
-			if (temp == delNode) {
-				temp = null;
-				return;
-			}
-			if (temp.getRight() != null) {
-				if (temp.getRight() == delNode) {
-					temp.setRight(null);
-					return;
-				} else
-					q.add(temp.getRight());
-			}
-			if (temp.getLeft() != null) {
-				if (temp.getLeft() == delNode) {
-					temp.setLeft(null);
-					return;
-				} else
-					q.add(temp.getLeft());
-			}
+		while (current != null) {
+			successorFather = successor;
+			successor = current;
+			current = current.getLeft();
 		}
+		if (successor != apaga.getRight()) {
+			successorFather.setLeft(successor.getRight());
+			successor.setRight(apaga.getRight());
+		}
+		return successor;
 	}
 
 	public static void main(String[] args) {
@@ -154,13 +151,25 @@ public class BinaryTree<T extends Comparable<T>> implements IBinaryTree<T> {
 
 		Node<Integer> rootNode = binaryTreeOps.createTree(elements);
 
-//		assertEquals(binaryTreeOps.toString(rootNode),
-//				"root:37 (left:20 (left:10 (left:5 )right:30 )right:80 (right:100 (left:90 right:180 )))");
+		assertEquals(binaryTreeOps.toString(rootNode),
+				"root:37 (left:20 (left:10 (left:5 )right:30 )right:80 (right:100 (left:90 right:180 )))");
 
 		binaryTreeOps.remove(rootNode, 180);
-		System.out.println(binaryTreeOps.toString(rootNode));
-//		assertEquals(binaryTreeOps.toString(rootNode),
-//				"root:37 (left:20 (left:10 (left:5 )right:30 )right:80 (right:100 (left:90 )))");
+		assertEquals(binaryTreeOps.toString(rootNode),
+				"root:37 (left:20 (left:10 (left:5 )right:30 )right:80 (right:100 (left:90 )))");
+
+		binaryTreeOps.remove(rootNode, 80);
+		assertEquals(binaryTreeOps.toString(rootNode),
+				"root:37 (left:20 (left:10 (left:5 )right:30 )right:100 (left:90 ))");
+
+		binaryTreeOps.remove(rootNode, 10);
+		assertEquals(binaryTreeOps.toString(rootNode), "root:37 (left:20 (left:5 right:30 )right:100 (left:90 ))");
+
+		binaryTreeOps.remove(rootNode, 20);
+		assertEquals(binaryTreeOps.toString(rootNode), "root:37 (left:30 (left:5 )right:100 (left:90 ))");
+
+//		binaryTreeOps.remove(rootNode, 37);
+//		assertEquals(binaryTreeOps.toString(rootNode), "root:100 (left:90 (left:30 (left:5 )))");
 	}
 
 	@Override
@@ -271,25 +280,28 @@ public class BinaryTree<T extends Comparable<T>> implements IBinaryTree<T> {
 
 	@Override
 	public String toString(Node<T> rootNode) {
-		String result = "";
-		String root = rootNode.isRoot() ? "root:" : "";
-		result += root + rootNode.getValue().toString() + " ";
+		if (rootNode != null) {
+			String result = "";
+			String root = rootNode.isRoot() ? "root:" : "";
+			result += root + rootNode.getValue().toString() + " ";
 
-		Node<T> left = rootNode.getLeft();
-		Node<T> right = rootNode.getRight();
+			Node<T> left = rootNode.getLeft();
+			Node<T> right = rootNode.getRight();
 
-		result = ((left != null) || (right != null)) ? result + "(" : result;
+			result = ((left != null) || (right != null)) ? result + "(" : result;
 
-		if (left != null) {
-			result += "left:" + toString(rootNode.getLeft());
-		}
+			if (left != null) {
+				result += "left:" + toString(rootNode.getLeft());
+			}
 
-		if (right != null) {
-			result += "right:" + toString(rootNode.getRight());
-		}
+			if (right != null) {
+				result += "right:" + toString(rootNode.getRight());
+			}
 
-		result = ((left != null) || (right != null)) ? result + ")" : result;
+			result = ((left != null) || (right != null)) ? result + ")" : result;
 
-		return result;
+			return result;
+		} else
+			return null;
 	}
 }
