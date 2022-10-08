@@ -24,9 +24,7 @@ public class BinaryTree<T extends Comparable<T>> implements IBinaryTree<T> {
 
 	@Override
 	public Integer degree(Node<T> rootNode, T nodeElement) {
-		System.out.println(rootNode.getValue());
 		Integer tem = 0;
-		T root = rootNode.getValue();
 		if (rootNode.getValue().compareTo(nodeElement) == 0) {
 			if (rootNode.getRight() != null)
 				tem += 1;
