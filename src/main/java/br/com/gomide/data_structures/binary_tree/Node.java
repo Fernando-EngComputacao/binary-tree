@@ -48,5 +48,5 @@ public class Node<T extends Comparable<?>> {
 
 	public void setRoot(boolean isRoot) {
 		this.isRoot = isRoot;
-	}
+	}	
 }
