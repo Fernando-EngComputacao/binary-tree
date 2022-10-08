@@ -253,7 +253,7 @@ public class BinaryTree<T extends Comparable<T>> implements IBinaryTree<T> {
 		if (rootNode.getValue() == nodeElement) {
 			return 0;
 		}
-		Node<T> a = new Node<T>();
+		Node<T> a = new Node<T>(nodeElement);
 		while (a != null) {
 			a = getFather(rootNode, a.getValue());
 			lvl++;
